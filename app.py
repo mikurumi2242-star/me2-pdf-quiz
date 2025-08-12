@@ -12,19 +12,19 @@ def load_all_questions():
     items = []
     if not os.path.isdir(DATA_DIR):
         return items
-    for fn in os.listdir(DATA_DIR):
+  for fn in os.listdir(DATA_DIR):
         if fn.lower().endswith(".json"):
             path = os.path.join(DATA_DIR, fn)
             try:
                 with open(path, "r", encoding="utf-8") as f:
                     arr = json.load(f)
                 for q in arr:
-                    # 最低限のチェック（単一正答／2〜5択）
                     opts = q.get("options") or []
                     ans  = q.get("answer")
-                    if not (2 <= len(opts) <= 5): 
+                    # 5択固定＆正答は1〜5
+                    if len(opts) != 5: 
                         continue
-                    if ans not in ["A","B","C","D","E"][:len(opts)]:
+                    if ans not in ["1","2","3","4","5"]:
                         continue
                     items.append(q)
             except Exception as e:
